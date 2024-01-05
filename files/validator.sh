@@ -10,8 +10,8 @@ exec /mnt/solana/target/release/solana-validator \
 --rpc-port 8899 \
 --dynamic-port-range 8002-8099 \
 --no-port-check \
+--halt-on-trusted-validators-accounts-hash-mismatch \
 --gossip-port 8001 \
---no-untrusted-rpc \
 --no-voting \
 --private-rpc \
 --rpc-bind-address 0.0.0.0 \
@@ -23,6 +23,7 @@ exec /mnt/solana/target/release/solana-validator \
 --accounts /mnt/solana-accounts \
 --ledger /mnt/solana-ledger \
 --snapshots /mnt/solana-snapshots \
+--expected-genesis-hash 5eykt4UsFv8P8NJdTREpY1vzqKqZKvdpKuc147dw2N9d \
 --no-snapshot-fetch \
 --limit-ledger-size 400000000 \
 --rpc-send-default-max-retries 3 \
@@ -31,11 +32,4 @@ exec /mnt/solana/target/release/solana-validator \
 --full-rpc-api \
 --accounts-index-memory-limit-mb 350 \
 --account-index-exclude-key kinXdEcpDQeHPEuQnqmUgtYykqKGVFq6CeVX5iAHJq6 \
---tpu-use-quic \
---known-validator PUmpKiNnSVAZ3w4KaFX6jKSjXUNHFShGkXbERo54xjb \
---known-validator Ninja1spj6n9t5hVYgF3PdnYz2PLnkt7rvaw3firmjs \
---known-validator CXPeim1wQMkcTvEHx9QdhgKREYYJD8bnaCCqPRwJ1to1 \
---known-validator A4hyMd3FyvUJSRafDUSwtLLaQcxRP4r1BRC9w2AJ1to2 \
---known-validator 23U4mgK9DMCxsv2StC4y2qAptP25Xv5b2cybKCeJ1to3 \
---known-validator Ei8VLKR3chZAhJzWwj8PopeuedpQiths2ovVCQ2BCvK7 \
---known-validator DiGifdKABxzru2KsjN3YkZZmWP9mVMYK8HWadjtPtJit
+--tpu-use-quic
