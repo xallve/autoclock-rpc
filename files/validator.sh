@@ -24,7 +24,6 @@ exec /mnt/solana/target/release/solana-validator \
 --ledger /mnt/solana-ledger \
 --snapshots /mnt/solana-snapshots \
 --expected-genesis-hash 5eykt4UsFv8P8NJdTREpY1vzqKqZKvdpKuc147dw2N9d \
---no-snapshot-fetch \
 --limit-ledger-size 400000000 \
 --rpc-send-default-max-retries 3 \
 --rpc-send-service-max-retries 3 \
