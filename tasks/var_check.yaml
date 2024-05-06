@@ -4,10 +4,16 @@
 #  register: keyfile
 #  failed_when: not keyfile.stat.exists
 
-- name: check disks exist
+- name: check ledger_disk exist
   become: true
   become_user: root
   shell: fdisk -l | grep 'Disk /dev/{{ ledger_disk }}'
+  when: setup_disks is defined and (setup_disks | bool)
+
+- name: check accounts_disk exist
+  become: true
+  become_user: root
+  shell: fdisk -l | grep 'Disk /dev/{{ accounts_disk }}'
   when: setup_disks is defined and (setup_disks | bool)
 
 - name: validate some variables

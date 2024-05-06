@@ -8,7 +8,7 @@
 - name: format disks with ext4
   become: true
   become_user: root
-  shell: mkfs.ext4 /dev/{{ ledger_disk }}
+  shell: mkfs.ext4 /dev/{{ ledger_disk }} && mkfs.ext4 /dev/{{ accounts-disk }}
   when: mount_mnt.rc != 0
 
 - name: mount disks for ledger
@@ -17,10 +17,38 @@
   shell: mount /dev/{{ ledger_disk }} /mnt/solana-ledger && chown -R solana:solana /mnt/solana-ledger
   when: mount_mnt.rc != 0
 
-- name: add mounted disk to fstab
+- name: mount disks for snapshots
+  become: true
+  become_user: root
+  shell: mount /dev/{{ ledger_disk }} /mnt/solana-snapshots && chown -R solana:solana /mnt/solana-snapshots
+  when: mount_mnt.rc != 0
+
+- name: mount disks for accounts
+  become: true
+  become_user: root
+  shell: mount /dev/{{ accounts-disk }} /mnt/solana-accounts && chown -R solana:solana /mnt/solana-accounts
+  when: mount_mnt.rc != 0
+
+- name: add mounted solana_ledger to fstab
   become: true
   become_user: root
   lineinfile:
     dest: /etc/fstab
     state: present
     line: "/dev/{{ ledger_disk }}    /mnt/solana-ledger    ext4    defaults    0    1"
+
+- name: add mounted solana_snapshots to fstab
+  become: true
+  become_user: root
+  lineinfile:
+    dest: /etc/fstab
+    state: present
+    line: "/dev/{{ ledger_disk }}    /mnt/solana-snapshots    ext4    defaults    0    1"
+
+- name: add mounted solana_accounts to fstab
+  become: true
+  become_user: root
+  lineinfile:
+    dest: /etc/fstab
+    state: present
+    line: "/dev/{{ accounts_disk }}    /mnt/solana-accounts    ext4    defaults    0    1"
