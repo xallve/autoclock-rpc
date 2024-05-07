@@ -1,51 +1,36 @@
-- name: Create swap file
+- name: Turn off swap file
   become: true
   become_user: root
-  command:
-    dd if=/dev/zero of=/mnt/swapfile bs=1024 count={{ swap_mb }}k
-    creates="/mnt/swapfile"
+  command: "sudo swapoff /swap.img"
 
-- name: Change swap file permissions
+- name: Create new swap
   become: true
   become_user: root
-  file: 
-    path=/mnt/swapfile
-    owner=root
-    group=root
-    mode=0600
+  command: "sudo mkswap /dev/{{ swap_disk }}"
 
-- name: Check swap file type
+- name: Turn on new swap
   become: true
   become_user: root
-  command: file /mnt/swapfile
-  register: swapfile
-
-- name: Make swap file
-  become: true
-  become_user: root
-  command: "sudo mkswap /mnt/swapfile"
-  when: swapfile.stdout.find('swap file') == -1
-
-- name: Write swap entry in fstab
-  become: true
-  become_user: root
-  mount: name=none
-    src=/mnt/swapfile
-    fstype=swap
-    opts=sw
-    passno=0
-    dump=0
-    state=present
+  command: "sudo swapon /dev/{{ swap_disk }}"
 
 - name: swap check
   become: true
   become_user: root
   ignore_errors: yes
-  shell: swapon -show | grep /mnt/swapfile
+  shell: swapon -show | grep /dev/{{ swap_disk }}
   register: swap_check
 
-- name: Mount swap
+- name: format swap_disk with ext4
   become: true
   become_user: root
-  command: "swapon /mnt/swapfile"
-  when: swap_check.rc != 0
+  shell: mkfs.ext4 /dev/{{ swap_disk }}
+
+- name: add swap_disk to fstab
+  become: true
+  become_user: root
+  lineinfile:
+    dest: /etc/fstab
+    state: present
+    line: "/dev/{{ swap_disk }}  none  swap  sw  0  0"
+
+

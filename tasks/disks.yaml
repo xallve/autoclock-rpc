@@ -1,33 +1,46 @@
-- name: check mount
+- name: check ledger mount
   become: true
   become_user: root
   shell: df -h | grep mnt/solana-ledger
   ignore_errors: yes
-  register: mount_mnt
+  register: mount_ledger
 
-- name: format disks with ext4
+- name: check accounts mount
   become: true
   become_user: root
-  shell: mkfs.ext4 /dev/{{ ledger_disk }} && mkfs.ext4 /dev/{{ accounts-disk }}
-  when: mount_mnt.rc != 0
+  shell: df -h | grep mnt/solana-accounts
+  ignore_errors: yes
+  register: mount_accounts
+
+- name: format ledger_disks with ext4
+  become: true
+  become_user: root
+  shell: mkfs.ext4 /dev/{{ ledger_disk }}
+  when: mount_ledger.rc != 0
+
+- name: format accounts_disk with ext4
+  become: true
+  become_user: root
+  shell: mkfs.ext4 /dev/{{ accounts_disk }}
+  when: mount_accounts.rc != 0
 
 - name: mount disks for ledger
   become: true
   become_user: root
   shell: mount /dev/{{ ledger_disk }} /mnt/solana-ledger && chown -R solana:solana /mnt/solana-ledger
-  when: mount_mnt.rc != 0
+  when: mount_ledger.rc != 0
 
 - name: mount disks for snapshots
   become: true
   become_user: root
   shell: mount /dev/{{ ledger_disk }} /mnt/solana-snapshots && chown -R solana:solana /mnt/solana-snapshots
-  when: mount_mnt.rc != 0
+  when: mount_ledger.rc != 0
 
 - name: mount disks for accounts
   become: true
   become_user: root
-  shell: mount /dev/{{ accounts-disk }} /mnt/solana-accounts && chown -R solana:solana /mnt/solana-accounts
-  when: mount_mnt.rc != 0
+  shell: mount /dev/{{ accounts_disk }} /mnt/solana-accounts && chown -R solana:solana /mnt/solana-accounts
+  when: mount_accounts.rc != 0
 
 - name: add mounted solana_ledger to fstab
   become: true

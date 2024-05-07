@@ -3,8 +3,8 @@
 - name: var check
   include_tasks: var_check.yaml
 
-- name: create user
-  include_tasks: user.yaml
+#- name: create user
+# include_tasks: user.yaml
 
 - name: install dependencies
   include_tasks: deps.yaml
@@ -12,8 +12,8 @@
 - name: folders
   include_tasks: dirs.yaml
 
-- name: swap
-  include_tasks: swap.yaml
+#- name: swap
+# include_tasks: swap.yaml
 
 - name: setup disks
   include_tasks: disks.yaml
