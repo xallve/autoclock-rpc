@@ -1,9 +1,17 @@
+- name: check solana user
+  become: true
+  become_user: root
+  shell: grep solana /etc/passwd
+  ignore_errors: yes
+  register: user_check
+
 - name: create solana group
   become: true
   become_user: root
   group:
     name: solana
     state: present
+  when: user_check.rc != 0
 
 - name: create solana user
   become: true
@@ -13,6 +21,7 @@
     create_home: yes
     groups: solana
     shell: /bin/bash
+  when: user_check.rc != 0
 
 - name: solana user to have passwordless sudo
   become: true
@@ -23,6 +32,7 @@
     regexp: '^solana'
     line: 'solana ALL=(ALL) NOPASSWD: ALL'
     validate: 'visudo -cf %s'
+  when: user_check.rc != 0
 
 - name: Ensure solana build is in path for solana user
   become: true
@@ -30,3 +40,4 @@
   lineinfile:
     path: /home/solana/.bashrc
     line: 'export PATH=/mnt/solana/target/release:$PATH'
+  when: user_check.rc != 0
