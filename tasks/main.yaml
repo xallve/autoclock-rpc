@@ -3,8 +3,8 @@
 - name: var check
   include_tasks: var_check.yaml
 
-#- name: create user
-# include_tasks: user.yaml
+- name: create user
+  include_tasks: user.yaml
 
 - name: install dependencies
   include_tasks: deps.yaml

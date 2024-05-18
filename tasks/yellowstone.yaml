@@ -1,0 +1,15 @@
+- name: yellowstone repository
+  become: true
+  become_user: solana
+  git:
+    repo: 'https://github.com/rpcpool/yellowstone-grpc.git'
+    dest: /mnt/yellowstone
+    version: "v1.17"
+
+- name: build yellowstone
+  become: true
+  become_user: solana
+  shell: source /home/solana/.cargo/env && /mnt/yellowstone/cargo build --release
+  args:
+    chdir: /mnt/yellowstone
+    executable: /bin/bash
