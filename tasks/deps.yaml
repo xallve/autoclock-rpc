@@ -48,6 +48,6 @@
   become_user: solana
   become_method: sudo
   when: cargo_exists is failed
-  shell: /tmp/sh.rustup.rs -y
+  shell: /tmp/sh.rustup.rs -y --default-toolchain=1.73.0
   args:
     executable: /bin/bash
