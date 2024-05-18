@@ -65,3 +65,11 @@
     owner: solana
     group: solana
 
+- name: copy config.json
+  become: true
+  become_user: solana
+  copy:
+    src: config.json
+    dest: /mnt/config.json
+    owner: solana
+    group: solana

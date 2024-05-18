@@ -26,7 +26,7 @@ exec /mnt/solana/target/release/solana-validator \
 --limit-ledger-size 50000000 \
 --rpc-send-retry-ms 2000 \
 --full-rpc-api \
---geyser-plugin-config  /mnt/yellowstone/yellowstone-grpc-geyser/config.json \
+--geyser-plugin-config  /mnt/config.json \
 --known-validator PUmpKiNnSVAZ3w4KaFX6jKSjXUNHFShGkXbERo54xjb \
 --known-validator Ninja1spj6n9t5hVYgF3PdnYz2PLnkt7rvaw3firmjs \
 --known-validator ChorusmmK7i1AxXeiTtQgQZhQNiXYU84ULeaYF1EH15n \

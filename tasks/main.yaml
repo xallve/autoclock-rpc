@@ -25,6 +25,9 @@
 - name: git
   include_tasks: git.yaml
 
+- name: yellowstone install
+  include_tasks: yellowstone.yaml
+
 - name: solana keygen
   include_tasks: keygen.yaml
 
