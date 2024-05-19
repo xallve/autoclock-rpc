@@ -1,0 +1,32 @@
+- name: atlas download
+  become: true
+  become_user: solana
+  git:
+    repo: 'https://github.com/helius-labs/atlas-txn-sender.git'
+    dest: /mnt/atlas
+    version: "main"
+
+- name: atlas build
+  become: true
+  become_user: solana
+  shell: source /home/solana/.cargo/env && /mnt/atlas/cargo build --release
+  args:
+    chdir: /mnt/atlas
+    executable: /bin/bash
+
+- name: atlas set env variables
+  become: true
+  become_user: solana
+  environment:
+    RPC_URL: http://localhost:8899/
+    GRPC_URL: http://localhost:10000/
+    NUM_LEADERS: 4
+    IDENTITY_KEYPAIR_FILE: /home/solana/rpc_node.json
+
+- name: atlas run
+  become: true
+  become_user: solana
+  shell: source /home/solana/.cargo/env && /mnt/atlas/cargo run --release
+  args:
+    chdir: /mnt/atlas
+    executable: /bin/bash

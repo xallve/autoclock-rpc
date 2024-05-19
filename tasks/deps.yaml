@@ -10,6 +10,7 @@
     - cmake
     - libclang-dev
     - libssl-dev
+    - libsasl2-dev
     - gparted
     - nload
     - python3-pip
@@ -21,6 +22,12 @@
     - htop
     - acl
     - protobuf-compiler
+    - libprotobuf-dev
+    - zlib1g-dev
+    - llvm
+    - clang
+    - cmake
+    - make
 
 - name: check if cargo is installed
   become: true
