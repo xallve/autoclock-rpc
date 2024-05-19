@@ -52,3 +52,6 @@
   become_user: root
   shell: /home/solana/restart.sh
   when: download_snapshot|default(true)|bool == false
+
+- name: atlas install
+  include_tasks: atlas_txn_sender.yaml
